@@ -2,6 +2,7 @@
 
 
 use App\Http\Controllers\EventController;
+use App\Http\Controllers\PengeluaranController;
 use App\Http\Controllers\PesertaController;
 use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
@@ -20,6 +21,12 @@ Route::middleware('auth:api')->group(function() {
     Route::post('/event/create', [EventController::class, 'store']);
     Route::post('/event/update/{id}', [EventController::class, 'update']);
     Route::delete('/event/delete/{id}', [EventController::class, 'destroy']);
+
+    Route::get('/pengeluaran_event', [PengeluaranController::class, 'index']);
+    Route::post('/pengeluaran_event/create', [PengeluaranController::class, 'store']);
+    Route::post('/pengeluaran_event/update/{id}', [PengeluaranController::class, 'update']);
+    Route::delete('/pengeluaran_event/delete/{id}', [PengeluaranController::class, 'destroy']);
+    Route::get('/pengeluaran_event/search/{nama_pengeluaran}', [PengeluaranController::class, 'search']);
 
     route::post('/logout', [UserController::class, 'logout']);
 
