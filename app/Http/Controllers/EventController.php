@@ -77,4 +77,15 @@ class EventController extends Controller
         $event->delete();
         return response()->json(['message' => 'Event berhasil dihapus']);
     }
+
+    public function search($nama_event)
+    {
+        $results = Event::where('nama_event', 'like', '%' . $nama_event . '%')->get();
+
+        if ($results->isEmpty()) {
+            return response()->json(['message' => 'Event tidak ada'], 404);
+        }
+        
+        return response()->json($results);
+    }
 }

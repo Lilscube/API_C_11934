@@ -12,6 +12,10 @@ Route::post('/register', [UserController::class, 'register']);
 Route::post('/login', [UserController::class, 'login']);
 
 Route::middleware('auth:api')->group(function() {
+
+    Route::post('/user/update/{id}', [UserController::class, 'update']);
+    Route::delete('/user/delete/{id}', [UserController::class, 'destroy']);
+
     Route::get('/peserta', [PesertaController::class, 'index']);
     Route::post('/peserta/create', [PesertaController::class, 'store']);
     Route::post('/peserta/update/{id}', [PesertaController::class, 'update']);
@@ -21,6 +25,7 @@ Route::middleware('auth:api')->group(function() {
     Route::post('/event/create', [EventController::class, 'store']);
     Route::post('/event/update/{id}', [EventController::class, 'update']);
     Route::delete('/event/delete/{id}', [EventController::class, 'destroy']);
+    Route::get('/event/search/{nama_event}', [EventController::class, 'search']);
 
     Route::get('/pengeluaran_event', [PengeluaranController::class, 'index']);
     Route::post('/pengeluaran_event/create', [PengeluaranController::class, 'store']);

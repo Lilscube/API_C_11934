@@ -58,4 +58,49 @@ class UserController extends Controller
         }
         return response()->json(['message' => 'Not logged in'], 401);
     }
+
+    public function update(Request $request, $id)
+    {
+        $request->validate([
+            'name' => 'sometimes|string|max:255',
+            'email' => 'sometimes|string|email|max:255|unique:users,email,' . $id,
+            'password' => 'nullable|string|min:8',
+        ]);
+
+        $user = User::find($id);
+
+        if (!$user || $user->id !== Auth::id()) {
+            return response()->json(['message' => 'User tidak ditemukan atau Anda tidak memiliki akses'], 403);
+        }
+
+        $user->name = $request->input('name', $user->name);
+        $user->email = $request->input('email', $user->email);
+
+        if ($request->filled('password')) {
+            $user->password = Hash::make($request->password);
+        }
+
+        $user->save();
+
+        return response()->json([
+            'message' => 'User berhasil diperbarui',
+            'user' => $user,
+        ], 200);
+    }
+
+
+    public function destroy($id)
+    {
+        $user = User::find($id);
+
+        if (!$user || $user->id !== Auth::id()) {
+            return response()->json(['message' => 'User tidak ditemukan atau Anda tidak memiliki akses'], 403);
+        }
+        
+        $user->delete();
+
+        return response()->json(['message' => 'User berhasil dihapus'], 200);
+    }
+
+
 }
